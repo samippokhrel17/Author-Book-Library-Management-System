@@ -242,16 +242,58 @@ const login = async (req, res) => {
   }
 };
 
+// const getInfo = async (req, res) => {
+//   try {
+//     // user authentication using jwt token
+//     const token = req.headers.authorization;
+//     if (!token) {
+//       return res.status(401).json("Authentication required");
+//     }
+//     //user id from jwt token
+//     const decodedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+//     const userId = decodedToken.userId;
+//   } catch (error) {
+//     console.log(error);
+//     return res.status(500).json(error);
+//   }
+// };
+
 const getInfo = async (req, res) => {
   try {
-    // user authentication using jwt token
+    // User authentication using JWT token
     const token = req.headers.authorization;
     if (!token) {
       return res.status(401).json("Authentication required");
     }
-    //user id from jwt token
+    // User ID from JWT token
     const decodedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
     const userId = decodedToken.userId;
+
+    // Extract author name from request body
+    const { author_name } = req.body;
+
+    if (!author_name) {
+      return res.status(400).json("Author name is required");
+    }
+
+    // Formulate the SQL query string with the dynamically provided author name
+    let query = `
+      SELECT *
+      FROM bookListing
+      INNER JOIN author ON bookListing.author_name = author.author_name
+      WHERE author.author_name = '${author_name}';
+    `;
+
+    // Execute the SQL query
+    let result = await executeQuery(query);
+
+    // Handle the query result
+    if (result.length === 0) {
+      return res.status(404).json("No data found");
+    }
+
+    // If data found, return it
+    return res.status(200).json(result);
   } catch (error) {
     console.log(error);
     return res.status(500).json(error);
@@ -259,3 +301,8 @@ const getInfo = async (req, res) => {
 };
 
 module.exports = { registerUser, login, getInfo };
+
+// SELECT *
+// FROM bookListing
+// INNER JOIN author ON bookListing.author_name = author.author_name
+// WHERE author.author_name = 'Laxmi Pd Devkota';

@@ -5,7 +5,11 @@ const { author } = require("../Controller/authorController");
 const { library } = require("../Controller/libraryController");
 const { transaction } = require("../Controller/tranjectionController");
 
-const { registerUser, login } = require("../Controller/userController");
+const {
+  registerUser,
+  login,
+  getInfo,
+} = require("../Controller/userController");
 
 const express = require("express");
 
@@ -17,5 +21,6 @@ router.post("/library", library);
 router.post("/transaction", transaction);
 router.post("/registerUser", registerUser);
 router.post("/login", login);
+router.get("/getInfo", getInfo);
 
 module.exports = router;
