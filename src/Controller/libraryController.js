@@ -31,8 +31,8 @@ const library = async (req, res) => {
       libraryAccout_details: libraryAccout_details,
       bookNumber: bookNumber,
       totalAmountTrajection: totalAmountTrajection,
-      accept: is_sold,
-      reject: is_deleted,
+      accept: accept,
+      reject: reject,
     };
     let query = sqlString.format(`INSERT INTO Library.library SET ?`, [
       insertObject,
