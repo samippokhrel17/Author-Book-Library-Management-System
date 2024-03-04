@@ -24,7 +24,6 @@ const transaction = async (req, res) => {
       phone_numbers: phone_numbers,
       amount_of_book: amount_of_book,
       email: email,
-      is_sold: is_sold,
       is_success: is_success,
     };
     let query = sqlString.format(`INSERT INTO Library.tranjection SET ?`, [
